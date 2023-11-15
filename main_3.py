@@ -1,9 +1,6 @@
 import os
 import json
-import tkinter
-from tkinter import *
-from tkinter import ttk
-import copy
+
 
 class Car():
 
@@ -91,136 +88,6 @@ def getCarsIndexById(id:int, cars):
 def showCars(cars):
     for i in cars:
         print(vars(i))
-"""
-def addCar():
-    def add():
-        for i in fields:
-            i[2].grid_forget()
-        newCar={}
-        newCar["id"]=getNewID(cars)
-        isSuccess=True
-        attrs=list(Car.getMainAttrs().values())
-
-        for i in range(len(attrs)):
-            if fields[i][1].get()=="":
-                isSuccess=False
-                fields[i][2].grid(row=i + 1, column=3)
-                continue
-            if attrs[i]==bool:
-                if fields[i][1].get()=="да" or fields[i][1].get()=="нет":
-                    newCar[fields[i][0].cget('text')]=fields[i][1].get()
-                    continue
-                else:
-                    isSuccess=False
-                    fields[i][2].grid(row=i + 1, column=3)
-                    continue
-            try:
-                newCar[fields[i][0].cget('text')]=attrs[i](fields[i][1].get())
-            except:
-                print(attrs[i], fields[i][1].get())
-                isSuccess=False
-                fields[i][2].grid(row=i+1,column=3)
-        newCar["extraInfo"]=fields[len(fields)-1][1].get()
-        if isSuccess==True:
-            cars.append(Car(newCar))
-            updateTable()
-            open("cars.txt", "w").write(json.dumps([vars(i) for i in cars]))
-            changeWindow.destroy()
-
-    changeWindow=Tk()
-    fields = []
-    for i in Car.getMainAttrs():
-        if i == "id":
-            continue
-        field = []
-        fields.append(field)
-        field.append(Label(changeWindow, text=i))
-        field[0].grid(in_=changeWindow, row=len(fields), column=1)
-        field.append(Entry(changeWindow))
-        field[1].grid(in_=changeWindow, row=len(fields), column=2)
-        field.append(Label(changeWindow, text="-некорректное значение", fg='red'))
-    fields.append([Label(changeWindow,text="extraInfo"),Entry(changeWindow),Label(changeWindow,text="-некорректное значение",fg='red')])
-    print(fields)
-    fields[len(fields)-1][0].grid(in_=changeWindow,row=len(fields),column=1)
-    fields[len(fields) - 1][1].grid(in_=changeWindow,row=len(fields), column=2)
-    fields[len(fields) - 1][2].grid_forget()
-
-    Button(changeWindow, text="добавить", command=add).grid(row=1, column=4)
-    Button(changeWindow, text="отмена").grid(row=2, column=4)
-    changeWindow.mainloop()
-
-def changeCar(a):
-    def close():
-        changeWindow.destroy()
-    def deleteCar():
-        cars.pop(carId)
-        open("cars.txt", "w").write(json.dumps([vars(i) for i in cars]))
-        updateTable()
-        changeWindow.destroy()
-    def acceptChanges():
-        nonlocal carObj
-        print(carObj,cars[getCarsIndexById(table.item(table.focus())["values"][0],cars)])
-        for i in fields:
-            i[2].grid_forget()
-        testCar=copy.deepcopy(carObj)
-        isSuccess=True
-        for i in fields:
-            result=testCar.changeProperty(i[0].cget('text'),i[1].get())
-            if result!=True:
-                isSuccess=False
-                i[2].config(text="-"+result)
-                i[2].grid(row=fields.index(i)+1,column=3)
-        if isSuccess==True:
-            cars[cars.index(carObj)]=testCar
-            open("cars.txt", "w").write(json.dumps([vars(i) for i in cars]))
-            updateTable()
-            changeWindow.destroy()
-
-    changeWindow=Tk()
-    carId=getCarsIndexById(table.item(table.focus())["values"][0],cars)
-    carObj=cars[carId]
-    car=vars(carObj)
-    fields=[]
-    for i in car:
-        if i=="id":
-            continue
-        field=[]
-        fields.append(field)
-        field.append(Label(changeWindow,text=i))
-        field[0].grid(in_=changeWindow, row=len(fields), column=1)
-        field.append(Entry(changeWindow))
-        field[1].insert(0,str(car[i]))
-        field[1].grid(in_=changeWindow,row=len(fields),column=2)
-        field.append(Label(changeWindow,text="-некорректное значение", fg='red'))
-        field[2].grid_forget()
-
-    Button(changeWindow,text="удалить машину",command=deleteCar).grid(row=1,column=4)
-    Button(changeWindow,text="принять изменения",command=acceptChanges).grid(row=2, column=4)
-    Button(changeWindow,text="отмена",command=close).grid(row=3, column=4)
-    changeWindow.mainloop()
-
-def updateTable():
-    global table
-
-    table.destroy()
-    table = ttk.Treeview(show="headings", selectmode="browse")
-
-    heads = list(Car.getMainAttrs().keys())
-    heads.insert(0, 'id')
-    heads.append('extraInfo')
-    table['columns'] = heads
-
-    table.bind("<Double-1>", changeCar)
-
-    for i in heads:
-        table.heading(i, text=i, anchor='center')
-        table.column(i, anchor='center', width=1, stretch=True)
-
-    for i in cars:
-        table.insert('', tkinter.END, values=list(vars(i).values()))
-    table.place(relheight=1, relwidth=0.6, x=300)
-
-"""
 
 cars=[]
 if os.path.exists("cars.txt") == True :
@@ -228,23 +95,7 @@ if os.path.exists("cars.txt") == True :
         cars=[Car(i) for i in json.load(open("cars.txt", "r"))]
 else:
     open("cars.txt", "x")
-"""
-window = Tk()
-window.resizable(width=True, height=True)
-window.minsize(width=1000,height=400)
-table=ttk.Treeview()
-updateTable()
 
-buttons_frame=Frame()
-buttons_frame.place(relx=0,width=300)
-Button(buttons_frame,text="добавить",font="Times 12",command=addCar).grid(row=0,pady=15,column=1)
-Button(buttons_frame,text="найти",font="Times 12").grid(row=0,column=2)
-Label(buttons_frame,text="двойное нажатие по элементу\n для изменения/удаления",font="Times 17").grid(row=1,column=1,columnspan=2)
-
-
-
-window.mainloop()
-"""
 while True:
 
     showCars(cars)
