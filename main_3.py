@@ -46,6 +46,14 @@ class Car():
     def getMainAttrs(cls):
         return cls.__mainAttrs
 
+    def beep():
+        print("beeep")
+
+    def switchLights(self):
+        if self.lightsIsOn=="да":
+            self.lightsIsOn="нет"
+        else:
+            self.lightsIsOn="да"
 
     def changeProperty(self, property, newValue):
         if property == "id":
